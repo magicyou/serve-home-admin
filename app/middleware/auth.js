@@ -18,11 +18,10 @@ module.exports = (options, app) => {
             //获取token,如果没有传入token，则为空
             let token = ctx.headers.authorization ? ctx.headers.authorization : '';
             // token.substring(7); //把Bearer 截取掉，解析的时候不需要加上Bearer
+            let decode = '';
             try {
-                const decode = await app.jwt.verify(token, app.config.jwt.secret);
+                decode = await app.jwt.verify(token, app.config.jwt.secret);
                 ctx.state.userinfo = decode;
-                await next();
-                return false;
             } catch (err) {
                 ctx.status = 401;
                 ctx.body = {
@@ -30,7 +29,10 @@ module.exports = (options, app) => {
                     message: 'token失效或解析错误',
                     data: null
                 };
+                return false;
             }
+            await next();
+
         }
 
     }

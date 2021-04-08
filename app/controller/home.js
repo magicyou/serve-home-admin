@@ -9,6 +9,16 @@ class HomeController extends ApiController {
     }
     async getEntryList() {
         const { ctx } = this;
+        const data = await ctx.service.entry.select();
+        ctx.body = {
+            code: 0,
+            msg: 'success',
+            data,
+        };
+    }
+
+    async getEntryList2() {
+        const { ctx } = this;
         const data = [
             {id: 1, 'name': 'Blog', icon:'iconbiji', linkUrl: 'https://blog.magicyou.cn/'},
             {id: 2, 'name': 'Cloud', icon:'iconwenjianjia', linkUrl: ''},

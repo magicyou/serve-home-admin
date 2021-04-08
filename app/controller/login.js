@@ -7,6 +7,7 @@ class LoginController extends Controller {
     async index() {
         const { ctx, app } = this;
         const params = ctx.request.body;
+        console.log('params:', params);
 
         if (!params.username || !params.password) {
 
