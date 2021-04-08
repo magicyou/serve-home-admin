@@ -6,10 +6,21 @@ class EntryService extends Service {
   //   // 就可以直接通过 this.ctx 获取 ctx 了
   //   // 还可以直接通过 this.app 获取 app 了
   // }
-  async select() {
-    const data = await this.app.mysql.query('select * from entry');
-    return data;
-  }
+    async select() {
+        const data = await this.app.mysql.select('entry');
+        return data;
+    }
+
+    async add() {
+        const result = await this.app.mysql.insert('entry', {'name': 'test', 'icon': 'iconfont', 'link_url': 'http://baidu.com'});
+        return result.affectedRows === 1;
+    }
+
+    async deleteByid(id) {
+        const result = await this.app.mysql.deletd('entry', {'id': id});
+        return result.affectedRows === 1;
+    }
+
 
 //   async getPicture(uid) {
 //     const result = await this.ctx.curl(`http://photoserver/uid=${uid}`, { dataType: 'json' });

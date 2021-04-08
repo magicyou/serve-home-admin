@@ -7,6 +7,7 @@ class HomeController extends ApiController {
         const { ctx } = this;
         ctx.body = 'hi, egg';
     }
+
     async getEntryList() {
         const { ctx } = this;
         const data = await ctx.service.entry.select();
@@ -31,6 +32,45 @@ class HomeController extends ApiController {
             data,
         };
     }
+
+    async addEntry() {
+        const { ctx, app } = this;
+        const params = ctx.request.body;
+        const result = await ctx.service.entry.add();
+        if (!result) {
+            ctx.body = {
+                code: 1,
+                msg: 'fail',
+                data: result
+            };
+            return false;
+        }
+        ctx.body = {
+            code: 0,
+            msg: 'success',
+            data: result
+        };
+    }
+
+    async deleteEntryById() {
+        const { ctx, app } = this;
+        const { id } = ctx.request.body;
+        const result = await ctx.service.entry.del(id);
+        if (!result) {
+            ctx.body = {
+                code: 1,
+                msg: 'fail',
+                data: result
+            };
+            return false;
+        }
+        ctx.body = {
+            code: 0,
+            msg: 'success',
+            data: result
+        };
+    }
+
 }
 
 module.exports = HomeController;
