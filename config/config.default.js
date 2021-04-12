@@ -31,7 +31,7 @@ module.exports = appInfo => {
     config.keys = appInfo.name + '_lxl';
 
     // add your middleware config here
-    config.routerAuth = ['/login'];
+    config.routerAuth = ['/login', '/', '/home/getEntryList'];
     config.middleware = ['report', 'auth'];
 
     // add your user config here

@@ -18,21 +18,6 @@ class HomeController extends ApiController {
         };
     }
 
-    async getEntryList2() {
-        const { ctx } = this;
-        const data = [
-            {id: 1, 'name': 'Blog', icon:'iconbiji', linkUrl: 'https://blog.magicyou.cn/'},
-            {id: 2, 'name': 'Cloud', icon:'iconwenjianjia', linkUrl: ''},
-            {id: 3, 'name': 'Frp', icon:'icondiannao', linkUrl: ''},
-            {id: 4, 'name': 'Pi', icon:'iconcaomeigan', linkUrl: 'http://pi.magicyou.cn/'},
-        ];
-        ctx.body = {
-            code: 0,
-            msg: 'success',
-            data,
-        };
-    }
-
     async addEntry() {
         const { ctx, app } = this;
         const params = ctx.request.body;
@@ -54,8 +39,18 @@ class HomeController extends ApiController {
 
     async deleteEntryById() {
         const { ctx, app } = this;
-        const { id } = ctx.request.body;
-        const result = await ctx.service.entry.del(id);
+        const { id } = ctx.request.query;
+        if (!id) {
+
+            ctx.body = {
+                code: 1,
+                msg: '删除失败',
+                data: null
+            };
+            return false;
+        }
+
+        const result = await ctx.service.entry.deleteByid(id);
         if (!result) {
             ctx.body = {
                 code: 1,
@@ -71,6 +66,47 @@ class HomeController extends ApiController {
         };
     }
 
+    async switchEntryDisplayByid() {
+        const { ctx, app } = this;
+        const { id } = ctx.request.body;
+        if (!id) {
+
+            ctx.body = {
+                code: 1,
+                msg: '更改失败',
+                data: null
+            };
+            return false;
+        }
+        const details = await ctx.service.entry.getDetailsByid(id);
+        if (!details) {
+            ctx.body = {
+                code: 1,
+                msg: '入口数据不存在',
+                data: result
+            };
+            return false;
+        }
+
+        let row = {
+            display: !details.display
+        }
+        const result = await ctx.service.entry.switchDisplayByid(id, row);
+        if (!result) {
+            ctx.body = {
+                code: 1,
+                msg: 'fail',
+                data: result
+            };
+            return false;
+        }
+        ctx.body = {
+            code: 0,
+            msg: 'success',
+            data: result
+        };
+
+    }
 }
 
 module.exports = HomeController;

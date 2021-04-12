@@ -7,7 +7,7 @@ class EntryService extends Service {
   //   // 还可以直接通过 this.app 获取 app 了
   // }
     async select() {
-        const data = await this.app.mysql.select('entry');
+        const data = await this.app.mysql.select('entry', {'where': {'is_deleted': 0}});
         return data;
     }
 
@@ -17,7 +17,18 @@ class EntryService extends Service {
     }
 
     async deleteByid(id) {
-        const result = await this.app.mysql.deletd('entry', {'id': id});
+        const result = await this.app.mysql.update('entry', {'is_deleted': 1}, {'where': {'id': id}});
+        return result.affectedRows === 1;
+    }
+
+    async getDetailsByid(id) {
+        const result = await this.app.mysql.get('entry', {'id': id});
+        return result;
+    }
+
+
+    async switchDisplayByid(id, row={}) {
+        const result = await this.app.mysql.update('entry', row, {'where': {'id': id}});
         return result.affectedRows === 1;
     }
 

@@ -17,7 +17,8 @@ module.exports = (options, app) => {
         } else {
             //获取token,如果没有传入token，则为空
             let token = ctx.headers.authorization ? ctx.headers.authorization : '';
-            // token.substring(7); //把Bearer 截取掉，解析的时候不需要加上Bearer
+            token = token.substring(7); //把Bearer 截取掉，解析的时候不需要加上Bearer
+            console.log('___token:', token);
             let decode = '';
             try {
                 decode = await app.jwt.verify(token, app.config.jwt.secret);

@@ -7,6 +7,8 @@ module.exports = app => {
     const { router, controller } = app;
     router.get('/', controller.home.index);
     router.post('/login', controller.login.index);
-    router.post('/home/getEntryList', controller.home.getEntryList);
+    router.get('/home/getEntryList', controller.home.getEntryList);
     router.post('/home/addEntry', controller.home.addEntry);
+    router.delete('/home/deleteEntryById', controller.home.deleteEntryById);
+    router.put('/home/switchEntryDisplayByid', controller.home.switchEntryDisplayByid);
 };
