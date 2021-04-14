@@ -21,7 +21,12 @@ class HomeController extends ApiController {
     async addEntry() {
         const { ctx, app } = this;
         const params = ctx.request.body;
-        const result = await ctx.service.entry.add();
+        const insertData = {
+            name: params.name,
+            icon: params.icon,
+            link_url: params.linkUrl,
+        };
+        const result = await ctx.service.entry.add(insertData);
         if (!result) {
             ctx.body = {
                 code: 1,

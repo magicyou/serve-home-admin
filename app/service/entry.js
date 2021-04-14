@@ -11,8 +11,9 @@ class EntryService extends Service {
         return data;
     }
 
-    async add() {
-        const result = await this.app.mysql.insert('entry', {'name': 'test', 'icon': 'iconfont', 'link_url': 'http://baidu.com'});
+    async add(insertData) {
+        console.log('insertData:', insertData);
+        const result = await this.app.mysql.insert('entry', insertData);
         return result.affectedRows === 1;
     }
 
