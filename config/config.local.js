@@ -3,7 +3,7 @@ exports.mysql = {
         host: 'localhost',
         port: '3306',
         user: 'root',
-        password: '11111111',
+        password: 'root',
         database: 'serve-home-admin',
     },
     app: true,
