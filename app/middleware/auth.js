@@ -11,27 +11,35 @@ module.exports = (options, app) => {
         //判断当前路由是否需要验证token
         const flag = routerAuth.includes(url)
 
-        if (flag) {
+        // if ('/api/checkToken' === url) {
+            
+        // } else 
+        
+        if (flag && '/api/checkToken' !== url) {
             await next();
             return false;
         } else {
             //获取token,如果没有传入token，则为空
             let token = ctx.headers.authorization ? ctx.headers.authorization : '';
             token = token.substring(7); //把Bearer 截取掉，解析的时候不需要加上Bearer
-            console.log('___token:', token);
             let decode = '';
-            try {
-                decode = await app.jwt.verify(token, app.config.jwt.secret);
-                ctx.state.userinfo = decode;
-            } catch (err) {
-                ctx.status = 401;
-                ctx.body = {
-                    code: 401,
-                    message: 'token失效或解析错误',
-                    data: null
-                };
-                return false;
+            if ('/api/checkToken' === url && !token) {
+                ctx.state.userinfo = null;
+            } else {
+                try {
+                    decode = await app.jwt.verify(token, app.config.jwt.secret);
+                    ctx.state.userinfo = decode;
+                } catch (err) {
+                    ctx.status = 401;
+                    ctx.body = {
+                        code: 401,
+                        message: 'token失效或解析错误',
+                        data: null
+                    };
+                    return false;
+                }
             }
+            
             await next();
 
         }

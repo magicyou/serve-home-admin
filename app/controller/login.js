@@ -56,11 +56,30 @@ class LoginController extends Controller {
 
     getUserInfo() {
         return new Promise(resolve => {
-          setTimeout(() => { // 用定时器模拟异步请求
-            const data = { id: 1, name: 'admin'}
-            resolve(data);
-          }, 1000);
+            setTimeout(() => { // 用定时器模拟异步请求
+                const data = { id: 1, name: 'admin'}
+                resolve(data);
+            }, 1000);
         });
+    }
+
+    checkToken () {
+        const { ctx, app } = this;
+        const userinfo = ctx.state.userinfo;
+        console.log('userinfo:', ctx.state.userinfo);
+        if (userinfo) {
+            ctx.body = {
+                code: 0,
+                msg: 'success',
+                data: userinfo,
+            };
+        } else {
+            ctx.body = {
+                code: 1,
+                msg: '请先登录',
+                data: null,
+            };
+        }
     }
 }
 
