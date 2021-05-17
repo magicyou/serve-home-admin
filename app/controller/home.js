@@ -18,13 +18,19 @@ class HomeController extends ApiController {
         };
     }
 
+    /**
+     * 添加新入口
+     * @author Bruce Lee
+     * @date 2021-05-17
+     * @returns {any}
+     */
     async addEntry() {
         const { ctx, app } = this;
         const params = ctx.request.body;
         const insertData = {
             name: params.name,
             icon: params.icon,
-            link_url: params.linkUrl,
+            link_url: params.link_url,
         };
         const result = await ctx.service.entry.add(insertData);
         if (!result) {
